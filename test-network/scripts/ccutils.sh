@@ -297,14 +297,16 @@ chaincodeInvoke() {
   FUNCTION_NAME=$4
 
   local ORDERER=localhost:7050
+  local PEER0_ORG1=localhost:7051
+  local PEER0_ORG2=localhost:9051
   local PEER0_ORG3=localhost:11051
 
   local TX='{"Args":['${FUNCTION_NAME}']'}
 
   # only for org 1 (SupplierA) and org2 (SupplierB)
-  if [[$ORG -ne 1 || $ORG -ne 2]]; then
-    errorln "This method is valid only for org 1 (SupplierA) or org 2 (SupplierB)"
-  fi
+  # if [[ $ORG != 1 ]] && [[ $ORG != 2 ]]; then
+  #   errorln "This method is valid only for org 1 (SupplierA) or org 2 (SupplierB)"
+  # fi
   
   infoln "Invoking on peer0.org${ORG} on channel '$CHANNEL_NAME'..."
   local rc=1
@@ -318,12 +320,17 @@ chaincodeInvoke() {
     case $1 in
     # SupplierA
     1)
-      local PEER0_ORG1=localhost:7051
       peer chaincode invoke -o $ORDERER -C $CHANNEL_NAME -n ${CC_NAME} -c $TX --tls --cafile $ORDERER_CA  --peerAddresses $PEER0_ORG1 --tlsRootCertFiles $PEER0_ORG1_CA --peerAddresses $PEER0_ORG3 --tlsRootCertFiles $PEER0_ORG3_CA  >&log.txt;;
     # SupplierB
     2)
-      local PEER0_ORG2=localhost:9051
-      peer chaincode invoke -o $ORDERER -C $CHANNEL_NAME -n ${CC_NAME} -c $TX --tls --cafile $ORDERER_CA  --peerAddresses $PEER0_ORG1 --tlsRootCertFiles $PEER0_ORG1_CA --peerAddresses $PEER0_ORG3 --tlsRootCertFiles $PEER0_ORG3_CA  >&log.txt;;
+      peer chaincode invoke -o $ORDERER -C $CHANNEL_NAME -n ${CC_NAME} -c $TX --tls --cafile $ORDERER_CA  --peerAddresses $PEER0_ORG2 --tlsRootCertFiles $PEER0_ORG2_CA --peerAddresses $PEER0_ORG3 --tlsRootCertFiles $PEER0_ORG3_CA  >&log.txt;;
+    # Agency
+    3)
+      if [[ $CHANNEL == "q2channel" ]]; then
+        peer chaincode invoke -o $ORDERER -C $CHANNEL_NAME -n ${CC_NAME} -c $TX --tls --cafile $ORDERER_CA  --peerAddresses $PEER0_ORG2 --tlsRootCertFiles $PEER0_ORG2_CA --peerAddresses $PEER0_ORG3 --tlsRootCertFiles $PEER0_ORG3_CA  >&log.txt
+      else
+        peer chaincode invoke -o $ORDERER -C $CHANNEL_NAME -n ${CC_NAME} -c $TX --tls --cafile $ORDERER_CA  --peerAddresses $PEER0_ORG1 --tlsRootCertFiles $PEER0_ORG1_CA --peerAddresses $PEER0_ORG3 --tlsRootCertFiles $PEER0_ORG3_CA  >&log.txt
+      fi;;     
      esac
     res=$?
     { set +x; } 2>/dev/null
