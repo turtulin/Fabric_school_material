@@ -4,12 +4,12 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "start": "node server.js",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "start": "node server.js"
     },
     "author": "Alessandro Marcelletti",
     "license": "ISC",
     "dependencies": {
+        "app-root-path": "3.1.0",
         "@grpc/grpc-js": "^1.9.13",
         "@hyperledger/fabric-gateway": "^1.4.0",
         "crypto": "^1.0.1",
