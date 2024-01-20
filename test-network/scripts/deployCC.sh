@@ -90,7 +90,7 @@ resolveSequence
 
 infoln "Deploy into channel q1channel"
 ## approve the definition for SupplierA
-approveForMyOrg 1
+approveForMyOrg 1 $CC_SEQUENCE
 
 ## check whether the chaincode definition is ready to be committed
 ## expect SupplierA to have approved and Agency not to
@@ -98,7 +98,7 @@ checkCommitReadiness 1 "\"SupplierAMSP\": true" "\"AgencyMSP\": false"
 checkCommitReadiness 3 "\"SupplierAMSP\": true" "\"AgencyMSP\": false"
 
 ## now approve also for Agency
-approveForMyOrg 3
+approveForMyOrg 3 $CC_SEQUENCE
 
 ## check whether the chaincode definition is ready to be committed
 ## expect them both to have approved
@@ -109,7 +109,7 @@ checkCommitReadiness 3 "\"SupplierAMSP\": true" "\"AgencyMSP\": true"
 commitChaincodeDefinition 1 3
 
 ## query on both orgs to see that the definition committed successfully
-queryCommitted 1
+queryCommitted 1 
 queryCommitted 3
 
 ## Invoke the chaincode - this does require that the chaincode have the 'initLedger'
@@ -126,7 +126,7 @@ CHANNEL_NAME="q2channel"
 
 infoln "Deploy into channel q2channel"
 ## approve the definition for SupplierB
-approveForMyOrg 2
+approveForMyOrg 2 $CC_SEQUENCE
 
 ## check whether the chaincode definition is ready to be committed
 ## expect SupplierA to have approved and Agency not to
@@ -134,7 +134,7 @@ checkCommitReadiness 2 "\"SupplierBMSP\": true" "\"AgencyMSP\": false"
 checkCommitReadiness 3 "\"SupplierBMSP\": true" "\"AgencyMSP\": false"
 
 ## now approve also for Agency
-approveForMyOrg 3
+approveForMyOrg 3 $CC_SEQUENCE
 
 ## check whether the chaincode definition is ready to be committed
 ## expect them both to have approved

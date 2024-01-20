@@ -34,7 +34,7 @@ function queryInstalled() {
 function approveForMyOrg() {
   ORG=$1
   setGlobals $ORG
-  CC_SEQUENCE=1
+  CC_SEQUENCE=$2
   set -x
   peer lifecycle chaincode approveformyorg -o localhost:7050 --ordererTLSHostnameOverride orderer.quotation.com --tls --cafile "$ORDERER_CA" --channelID $CHANNEL_NAME --name ${CC_NAME} --version ${CC_VERSION} --package-id ${PACKAGE_ID} --sequence ${CC_SEQUENCE} ${INIT_REQUIRED} ${CC_END_POLICY} ${CC_COLL_CONFIG} >&log.txt
   res=$?
